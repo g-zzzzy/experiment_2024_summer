@@ -2,12 +2,12 @@
 
 IMAGE="gzy:2"
 
-sudo docker stop ospf_perf1
-sudo docker stop ospf_perf2
-sudo docker stop ospf_perf3
-sudo docker rm ospf_perf1
-sudo docker rm ospf_perf2
-sudo docker rm ospf_perf3
+# sudo docker stop ospf_perf1
+# sudo docker stop ospf_perf2
+# sudo docker stop ospf_perf3
+# sudo docker rm ospf_perf1
+# sudo docker rm ospf_perf2
+# sudo docker rm ospf_perf3
 
 sudo docker run --privileged -itd --name ospf_perf1 --network none $IMAGE
 sudo docker run --privileged -itd --name ospf_perf2 --network none $IMAGE
