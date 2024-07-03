@@ -11,6 +11,8 @@ RUN apt-get install -y openvswitch-common
 RUN apt-get install -y iproute2
 RUN apt-get install -y frr frr-pythontools
 RUN apt-get install -y vim
+RUN git clone https://github.com/scottchiefbaker/dool.git
+RUN python3 /dool/install.py
 
 RUN sed -i 's/bgpd=no/bgpd=yes/' /etc/frr/daemons && cat /etc/frr/daemons
 RUN sed -i '/^zebra=.*/d' /etc/frr/daemons && \
