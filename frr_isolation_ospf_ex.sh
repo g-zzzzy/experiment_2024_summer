@@ -17,7 +17,7 @@ start_iperf3_client() {
     local i=$1
     local CONTAINER="net${i}_1"
     local SERVER_IP="192.168.$(($i*2+1)).4"
-    local LOGFILE="ospf${i}_1_to_3.csv"
+    local LOGFILE="ospf_isolation_${i}.csv"
     echo "Starting iperf3 client on $CONTAINER to connect to $SERVER_IP"
     sudo docker exec $CONTAINER iperf3 -c $SERVER_IP -t 60 > $LOGFILE &
     #sudo docker exec -d $CONTAINER  iperf3 -c $SERVER_IP -t 60 -P 10 &
