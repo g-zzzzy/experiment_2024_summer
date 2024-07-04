@@ -1,5 +1,3 @@
 #!/bin/bash
-sudo docker stop bgp_con1
-sudo docker stop bgp_con2
-sudo docker rm bgp_con1
-sudo docker rm bgp_con2
+sudo docker rm -f bgp_con1
+sudo docker rm -f bgp_con2
