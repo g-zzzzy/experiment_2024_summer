@@ -18,3 +18,5 @@ RUN sed -i 's/bgpd=no/bgpd=yes/' /etc/frr/daemons && cat /etc/frr/daemons
 RUN sed -i '/^zebra=.*/d' /etc/frr/daemons && \
 	echo "zebra=yes" >> /etc/frr/daemons
 RUN sed -i 's/ospfd=no/ospfd=yes/' /etc/frr/daemons
+
+RUN apt-get install -y iperf

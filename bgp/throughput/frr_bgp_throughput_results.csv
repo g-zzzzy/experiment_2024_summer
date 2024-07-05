@@ -1,0 +1,71 @@
+[ 11] local 10.10.1.2 port 51268 connected with 10.10.1.4 port 5001
+[  9] local 10.10.1.2 port 51300 connected with 10.10.1.4 port 5001
+[  7] local 10.10.1.2 port 51224 connected with 10.10.1.4 port 5001
+[ 24] local 10.10.1.2 port 51308 connected with 10.10.1.4 port 5001
+[  2] local 10.10.1.2 port 51212 connected with 10.10.1.4 port 5001
+[  5] local 10.10.1.2 port 51220 connected with 10.10.1.4 port 5001
+[  6] local 10.10.1.2 port 51222 connected with 10.10.1.4 port 5001
+[ 13] local 10.10.1.2 port 51254 connected with 10.10.1.4 port 5001
+------------------------------------------------------------
+Client connecting to 10.10.1.4, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[  8] local 10.10.1.2 port 51228 connected with 10.10.1.4 port 5001
+[ 14] local 10.10.1.2 port 51302 connected with 10.10.1.4 port 5001
+[ 18] local 10.10.1.2 port 51320 connected with 10.10.1.4 port 5001
+[ 16] local 10.10.1.2 port 51328 connected with 10.10.1.4 port 5001
+[ 19] local 10.10.1.2 port 51330 connected with 10.10.1.4 port 5001
+[ 23] local 10.10.1.2 port 51334 connected with 10.10.1.4 port 5001
+[ 28] local 10.10.1.2 port 51406 connected with 10.10.1.4 port 5001
+[ 22] local 10.10.1.2 port 51362 connected with 10.10.1.4 port 5001
+[ 15] local 10.10.1.2 port 51374 connected with 10.10.1.4 port 5001
+[ 26] local 10.10.1.2 port 51428 connected with 10.10.1.4 port 5001
+[ 10] local 10.10.1.2 port 51256 connected with 10.10.1.4 port 5001
+[ 25] local 10.10.1.2 port 51440 connected with 10.10.1.4 port 5001
+[  1] local 10.10.1.2 port 51226 connected with 10.10.1.4 port 5001
+[ 21] local 10.10.1.2 port 51350 connected with 10.10.1.4 port 5001
+[ 29] local 10.10.1.2 port 51390 connected with 10.10.1.4 port 5001
+[ 27] local 10.10.1.2 port 51432 connected with 10.10.1.4 port 5001
+[ 12] local 10.10.1.2 port 51232 connected with 10.10.1.4 port 5001
+[ 20] local 10.10.1.2 port 51304 connected with 10.10.1.4 port 5001
+[ 17] local 10.10.1.2 port 51352 connected with 10.10.1.4 port 5001
+[  4] local 10.10.1.2 port 51230 connected with 10.10.1.4 port 5001
+[  3] local 10.10.1.2 port 51306 connected with 10.10.1.4 port 5001
+[ 30] local 10.10.1.2 port 51412 connected with 10.10.1.4 port 5001
+[ 32] local 10.10.1.2 port 51442 connected with 10.10.1.4 port 5001
+[ 31] local 10.10.1.2 port 51456 connected with 10.10.1.4 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 31] 0.0000-60.0093 sec   321 GBytes  46.0 Gbits/sec
+[ 28] 0.0000-60.0096 sec   324 GBytes  46.4 Gbits/sec
+[ 30] 0.0000-60.0098 sec   317 GBytes  45.4 Gbits/sec
+[ 24] 0.0000-60.0092 sec   322 GBytes  46.1 Gbits/sec
+[  4] 0.0000-60.0098 sec   313 GBytes  44.8 Gbits/sec
+[  5] 0.0000-60.0091 sec   320 GBytes  45.8 Gbits/sec
+[  6] 0.0000-60.0095 sec   319 GBytes  45.7 Gbits/sec
+[ 13] 0.0000-60.0091 sec   315 GBytes  45.1 Gbits/sec
+[  9] 0.0000-60.0097 sec   313 GBytes  44.9 Gbits/sec
+[ 29] 0.0000-60.0099 sec   329 GBytes  47.1 Gbits/sec
+[  2] 0.0000-60.0095 sec   321 GBytes  45.9 Gbits/sec
+[ 22] 0.0000-60.0096 sec   320 GBytes  45.9 Gbits/sec
+[ 20] 0.0000-60.0092 sec   320 GBytes  45.8 Gbits/sec
+[ 19] 0.0000-60.0093 sec   325 GBytes  46.5 Gbits/sec
+[ 23] 0.0000-60.0097 sec   319 GBytes  45.6 Gbits/sec
+[ 18] 0.0000-60.0099 sec   327 GBytes  46.8 Gbits/sec
+[ 32] 0.0000-60.0101 sec   320 GBytes  45.8 Gbits/sec
+[  8] 0.0000-60.0098 sec   315 GBytes  45.1 Gbits/sec
+[  7] 0.0000-60.0091 sec   318 GBytes  45.5 Gbits/sec
+[  3] 0.0000-60.0096 sec   325 GBytes  46.5 Gbits/sec
+[ 10] 0.0000-60.0092 sec   323 GBytes  46.2 Gbits/sec
+[ 26] 0.0000-60.0089 sec   327 GBytes  46.8 Gbits/sec
+[ 21] 0.0000-60.0096 sec   316 GBytes  45.3 Gbits/sec
+[ 14] 0.0000-60.0092 sec   316 GBytes  45.2 Gbits/sec
+[ 15] 0.0000-60.0093 sec   324 GBytes  46.3 Gbits/sec
+[ 27] 0.0000-60.0095 sec   325 GBytes  46.5 Gbits/sec
+[  1] 0.0000-60.0096 sec   325 GBytes  46.5 Gbits/sec
+[ 17] 0.0000-60.0094 sec   316 GBytes  45.3 Gbits/sec
+[ 11] 0.0000-60.0091 sec   319 GBytes  45.6 Gbits/sec
+[ 25] 0.0000-60.0090 sec   312 GBytes  44.6 Gbits/sec
+[ 16] 0.0000-60.0093 sec   310 GBytes  44.4 Gbits/sec
+[ 12] 0.0000-60.0095 sec   326 GBytes  46.6 Gbits/sec
+[SUM] 0.0000-60.0000 sec  10.0 TBytes  1.47 Tbits/sec
+[ CT] final connect times (min/avg/max/stdev) = 0.076/0.101/0.130/0.014 ms (tot/err) = 32/0

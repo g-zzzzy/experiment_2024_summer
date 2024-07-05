@@ -1,9 +1,11 @@
 #!/bin/bash
 
-IMAGE="gzy:3"
+#IMAGE="gzy:3"
+IMAGE="gzy:4"
 
-sudo docker run --privileged -itd --name bgp_con1 --network none $IMAGE
-sudo docker run --privileged -itd --name bgp_con2 --network none $IMAGE
+
+sudo docker run --privileged -itd --name bgp_con1 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
+sudo docker run --privileged -itd --name bgp_con2 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
 
 sudo ip link add veth1 type veth peer name veth2
 # #去掉ARP限制
