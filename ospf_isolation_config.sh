@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGE="gzy:3"
+IMAGE="gzy:4"
 
 if [ -z "$1" ]; then
     echo "Usage: $0 <number_of_networks>"
@@ -140,4 +140,4 @@ for i in $(seq 1 $N); do
     sudo docker exec $CONTAINER3 vtysh -c "write"
 done
 
-echo "Created $N networks with BGP configured."
+echo "Created $N networks with OSPF configured."

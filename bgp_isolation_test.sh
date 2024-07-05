@@ -10,16 +10,19 @@ N=$1
 start_iperf3_server() {
     local i=$1
     local CONTAINER="net${i}_2"
-    echo "Starting iperf3 server on $CONTAINER"
-    sudo docker exec $CONTAINER iperf3 -sD
+    echo "Starting iperf server on $CONTAINER"
+    #sudo docker exec $CONTAINER iperf3 -sD
+    sudo docker exec $CONTAINER iperf -sD
 }
 start_iperf3_client() {
     local i=$1
     local CONTAINER="net${i}_1"
     local SERVER_IP="10.10.${i}.4"
-    local LOGFILE="bgp_isolation_${i}.csv"
-    echo "Starting iperf3 client on $CONTAINER to connect to $SERVER_IP"
-    sudo docker exec $CONTAINER iperf3 -c $SERVER_IP -t 60 > $LOGFILE &
+    local LOGFILE="bgp/isolation/bgp_isolation_${i}.csv"
+    #LOGFILE="bgp/throughput/frr_bgp_throughput_results.csv"
+    echo "Starting iperf client on $CONTAINER to connect to $SERVER_IP"
+    #sudo docker exec $CONTAINER iperf3 -c $SERVER_IP -t 60 > $LOGFILE &
+    sudo docker exec $CONTAINER iperf -c $SERVER_IP -P 32 -t 60 > $LOGFILE &
     #sudo docker exec -d $CONTAINER  iperf3 -c $SERVER_IP -t 60 -P 10 &
 }
 

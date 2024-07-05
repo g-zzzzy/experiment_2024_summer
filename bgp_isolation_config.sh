@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGE="gzy:3"
+IMAGE="gzy:4"
 
 if [ -z "$1" ]; then
     echo "Usage: $0 <number_of_networks>"
