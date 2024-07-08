@@ -13,15 +13,16 @@ def plot_from_csv(csv_file):
     cpu_usage = df[['usr', 'sys', 'idl']]
     memory_usage = df[['used', 'free', 'cach', 'avai']]
     #计算吞吐
-    df['recv_t'] = ((df['recv'] * 8) / 1024) / 1024
-    df['send_t'] = ((df['send'] * 8) / 1024) / 1024
+    # df['throughput'] = (df['recv'] + df['send'])
+    df['cpu_usage'] = cpu_usage['usr'] + cpu_usage['sys']
+
 
     # 绘制 CPU 使用率
-    plt.plot(df['time'], (cpu_usage['usr'] + cpu_usage['sys']) / df['recv_t'], label='CPU Usage/Gbps', color='blue', linestyle='-', linewidth=1.5)
+    plt.plot(df['time'], df['cpu_usage'], label='CPU Usage(Percentage)', color='blue', linestyle='-', linewidth=1.5)
     #plt.plot(df['time'], (cpu_usage['usr'] + cpu_usage['sys']) / df['send_t'], label='send CPU Usage/Gbps', color='red', linestyle='-', linewidth=1.5)
 
     # 绘制内存使用量
-    plt.plot(df['time'], (memory_usage['used'] / (1024**3)) / df['recv_t'], label='Memory Used (GB/Gbps)', color='green', linestyle='--', linewidth=1.5)
+    plt.plot(df['time'], (memory_usage['used'] / (1024**3)), label='Memory Used(GB)', color='green', linestyle='--', linewidth=1.5)
     #plt.plot(df['time'], (memory_usage['used'] / (1024**3)) / df['send_t'], label='send Memory Used (GB/Gbps)', color='yellow', linestyle='--', linewidth=1.5)
 
     # 绘制图表
@@ -30,7 +31,7 @@ def plot_from_csv(csv_file):
     plt.title('CPU Usage and Memory Usage Over Time')
     plt.legend()
     base_name = os.path.splitext(os.path.basename(csv_file))[0]
-    png_file = f'{base_name}.png'
+    png_file = f'ospf/resource/{base_name}.png'
     plt.savefig(png_file)
     plt.show()
     
