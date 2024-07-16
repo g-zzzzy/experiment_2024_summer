@@ -28,6 +28,20 @@ sudo ip netns exec $pid1 ip addr add 10.10.1.2/24 dev veth1
 sudo ip netns exec $pid2 ip link set veth2 up
 sudo ip netns exec $pid2 ip addr add 10.10.1.4/24 dev veth2
 
+# 在容器内部配置接口并限制带宽
+# 在命名空间 pid1 内限制 veth1 接口的带宽
+sudo ip netns exec $pid1 tc qdisc add dev veth1 root handle 1: htb default 10
+sudo ip netns exec $pid1 tc class add dev veth1 parent 1: classid 1:1 htb rate 60gbit
+sudo ip netns exec $pid1 tc class add dev veth1 parent 1:1 classid 1:10 htb rate 60gbit
+sudo ip netns exec $pid1 tc qdisc add dev veth1 parent 1:10 handle 10: netem delay 0ms
+
+# 在命名空间 pid2 内限制 veth2 接口的带宽
+sudo ip netns exec $pid2 tc qdisc add dev veth2 root handle 1: htb default 10
+sudo ip netns exec $pid2 tc class add dev veth2 parent 1: classid 1:1 htb rate 60gbit
+sudo ip netns exec $pid2 tc class add dev veth2 parent 1:1 classid 1:10 htb rate 60gbit
+sudo ip netns exec $pid2 tc qdisc add dev veth2 parent 1:10 handle 10: netem delay 0ms
+
+
 
 sudo docker exec -it bgp_con1 bash -c 'cat > /etc/frr/frr.conf <<EOF
 !

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOGFILE="bgp/throughput/1throughput_rate1g.txt"
+LOGFILE="bgp/throughput/1throughput.txt"
 
 DOCKER_STATS_LOGFILE="bgp/resource/1resource_mem20.csv"
 echo "Source, Destination, Test Time(seconds), Parallel Streams, Bandwidth(Gbps), Restransmissions" > $LOGFILE
