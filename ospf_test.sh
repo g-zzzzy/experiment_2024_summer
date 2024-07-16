@@ -1,24 +1,36 @@
 #!/bin/bash
 
 #echo "Source, Destination, Test Time, Parallel Streams, Bandwidth(Gbps), CPU Usage(%), Memory Usage(MB)" > $LOGFILE
-LOGFILE="ospf/throughput/frr_ospf_throughput_results.csv"
-sudo docker exec -d ospf_perf3 bash -c "> /src/ospf/resource/frr_ospf_resource_1to3_record.csv"
-sudo docker exec -d ospf_perf1 bash -c "> /src/ospf/resource/frr_ospf_resource_1to3_1record.csv"
-sudo docker exec -d ospf_perf2 bash -c "> /src/ospf/resource/frr_ospf_resource_1to3_2record.csv"
-sudo docker exec -d ospf_perf3 bash -c "dool --more --output /src/ospf/resource/frr_ospf_resource_1to3_3record.csv 1 60 &"
-sudo docker exec -d ospf_perf1 bash -c "dool --more --output /src/ospf/resource/frr_ospf_resource_1to3_1record.csv 1 60 &"
-sudo docker exec -d ospf_perf2 bash -c "dool --more --output /src/ospf/resource/frr_ospf_resource_1to3_2record.csv 1 60 &"
+LOGFILE="ospf/throughput/throughput_60G.csv"
+# DOCKER_STATS_LOGFILE="ospf/resource/1resource.csv"
+# # sudo docker exec -d ospf_perf3 bash -c "> /src/ospf/resource/frr_ospf_resource_1to3_record.csv"
+# # sudo docker exec -d ospf_perf1 bash -c "> /src/ospf/resource/frr_ospf_resource_1to3_1record.csv"
+# # sudo docker exec -d ospf_perf2 bash -c "> /src/ospf/resource/frr_ospf_resource_1to3_2record.csv"
+# # sudo docker exec -d ospf_perf3 bash -c "dool --more --output /src/ospf/resource/frr_ospf_resource_1to3_3record.csv 1 60 &"
+# # sudo docker exec -d ospf_perf1 bash -c "dool --more --output /src/ospf/resource/frr_ospf_resource_1to3_1record.csv 1 60 &"
+# # sudo docker exec -d ospf_perf2 bash -c "dool --more --output /src/ospf/resource/frr_ospf_resource_1to3_2record.csv 1 60 &"
 
-sudo docker exec -d ospf_perf3 iperf -s
+sudo docker exec -d ospf_3 iperf3 -s
 sleep 5
 
-echo "Running iperf test from ospf_perf1 to ospf_perf3"
-sudo docker exec ospf_perf1 iperf -c 192.168.2.5 -t 60 -P 32 > $LOGFILE
-#result=$(sudo docker exec ospf_resource1 iperf3 -c 192.168.12.5 -t 60 -P 10 --json)
+# 运行 docker stats 并将输出重定向到文件
+# {
+#   echo "Name,CPU_%,Mem_Usage_Limit,Mem_%" > $DOCKER_STATS_LOGFILE
+#   while true; do
+#     timestamp=$(date +"%Y-%m-%d %H:%M:%S")
+#     sudo docker stats --format "{{.Name}},{{.CPUPerc}},{{.MemUsage}}" ospf_1 | while read stats; do
+#       echo "$timestamp,$stats" >> $DOCKER_STATS_LOGFILE
+#     done
+#     sleep 1
+#   done
+# } &
+# DOCKER_STATS_PID=$!
 
-#bandwidth=$(echo "$result" | jq '.end.sum_received.bits_per_second')
-#bandwidth_gbps=$(echo "$bandwidth / (10^9)" | bc -l)
-#restransimissions=$(echo "$result" | jq '.end.sum_received.restransmits')
+echo >> $LOGFILE
+echo "Running iperf3 test from ospf_1 to ospf_3"
+# -b 60G
+sudo docker exec ospf_1 iperf3 -c 192.168.2.5 -t 60 > $LOGFILE
 
-#echo "ospf_perf1, ospf_perf3, 60, 10, $bandwidth_gbps, $retransmissions" >> $LOGFILE
+# 确保在脚本结束时终止 docker stats 监控进程
+# trap "kill $DOCKER_STATS_PID" EXIT
 

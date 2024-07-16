@@ -1,9 +1,11 @@
 FROM ubuntu:22.04
 
-RUN apt-get update
-RUN apt-get install git -y
-RUN apt install -y python3 python3-dev python3-pip
-RUN apt-get install -y inetutils-ping
+RUN apt-get update && \
+    apt-get install -y apt-utils && \
+    apt-get install -y python3 python3-dev python3-pip && \
+	apt-get install -y git && \
+	apt-get install -y tcpdump && \
+	apt-get install -y inetutils-ping
 RUN apt-get install -y iperf3
 RUN apt-get install -y netperf
 RUN apt-get install -y openvswitch-switch

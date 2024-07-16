@@ -1,0 +1,8 @@
+Source, Destination, Test Time(seconds), Parallel Streams, Bandwidth(Gbps), Restransmissions
+------------------------------------------------------------
+Client connecting to 10.10.1.4, TCP port 5001
+TCP window size: 85.0 KByte (default)
+------------------------------------------------------------
+[  1] local 10.10.1.2 port 60582 connected with 10.10.1.4 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-60.0088 sec   487 GBytes  69.7 Gbits/sec

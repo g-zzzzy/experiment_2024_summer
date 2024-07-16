@@ -9,12 +9,12 @@ IMAGE="gzy:4"
 # sudo docker rm ospf_perf2
 # sudo docker rm ospf_perf3
 
-sudo docker run --privileged -itd --name ospf_perf1 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
-sudo docker run --privileged -itd --name ospf_perf2 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
-sudo docker run --privileged -itd --name ospf_perf3 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
-sudo docker exec -it ospf_perf1 /bin/bash -c "sysctl -w net.ipv4.ip_forward=1"
-sudo docker exec -it ospf_perf2 /bin/bash -c "sysctl -w net.ipv4.ip_forward=1"
-sudo docker exec -it ospf_perf3 /bin/bash -c "sysctl -w net.ipv4.ip_forward=1"
+sudo docker run --privileged -itd --name ospf_1 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
+sudo docker run --privileged -itd --name ospf_2 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
+sudo docker run --privileged -itd --name ospf_3 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
+sudo docker exec -it ospf_1 /bin/bash -c "sysctl -w net.ipv4.ip_forward=1"
+sudo docker exec -it ospf_2 /bin/bash -c "sysctl -w net.ipv4.ip_forward=1"
+sudo docker exec -it ospf_3 /bin/bash -c "sysctl -w net.ipv4.ip_forward=1"
 
 
 #test unconnected
@@ -27,9 +27,9 @@ sudo ip link add veth1 type veth peer name veth2
 sudo ip link add veth3 type veth peer name veth4
 
 #获取pid
-pid1=$(sudo docker inspect -f '{{.State.Pid}}' ospf_perf1)
-pid2=$(sudo docker inspect -f '{{.State.Pid}}' ospf_perf2)
-pid3=$(sudo docker inspect -f '{{.State.Pid}}' ospf_perf3)
+pid1=$(sudo docker inspect -f '{{.State.Pid}}' ospf_1)
+pid2=$(sudo docker inspect -f '{{.State.Pid}}' ospf_2)
+pid3=$(sudo docker inspect -f '{{.State.Pid}}' ospf_3)
 
 sudo ln -s /proc/$pid1/ns/net /var/run/netns/$pid1
 sudo ln -s /proc/$pid2/ns/net /var/run/netns/$pid2
@@ -77,30 +77,30 @@ echo "config:"
 #!
 #EOF'
 
-sudo docker exec -it ospf_perf1 bash -c "
+sudo docker exec -it ospf_1 bash -c "
 
   # 配置 IPv4 转发
   echo 'net.ipv4.ip_forward = 1' | tee -a /etc/sysctl.conf
   sysctl -p /etc/sysctl.conf
 "
-sudo docker exec -it ospf_perf2 bash -c "
-
-  # 配置 IPv4 转发
-  echo 'net.ipv4.ip_forward = 1' | tee -a /etc/sysctl.conf
-  sysctl -p /etc/sysctl.conf
-"
-
-sudo docker exec -it ospf_perf3 bash -c "
+sudo docker exec -it ospf_2 bash -c "
 
   # 配置 IPv4 转发
   echo 'net.ipv4.ip_forward = 1' | tee -a /etc/sysctl.conf
   sysctl -p /etc/sysctl.conf
 "
 
-sudo docker exec ospf_perf1 bash -c 'cat > /etc/frr/frr.conf <<EOF
+sudo docker exec -it ospf_3 bash -c "
+
+  # 配置 IPv4 转发
+  echo 'net.ipv4.ip_forward = 1' | tee -a /etc/sysctl.conf
+  sysctl -p /etc/sysctl.conf
+"
+
+sudo docker exec ospf_1 bash -c 'cat > /etc/frr/frr.conf <<EOF
 !
 frr defaults traditional
-hostname ospf_perf1
+hostname ospf_1
 service integrated-vtysh-config
 log file /var/log/frr/frr.log
 !
@@ -114,10 +114,10 @@ router ospf
 !
 EOF'
 
-sudo docker exec ospf_perf2 bash -c 'cat > /etc/frr/frr.conf <<EOF
+sudo docker exec ospf_2 bash -c 'cat > /etc/frr/frr.conf <<EOF
 !
 frr defaults traditional
-hostname ospf_perf2
+hostname ospf_2
 service integrated-vtysh-config
 log file /var/log/frr/frr.log
 !
@@ -134,10 +134,10 @@ router ospf
 !
 EOF'
 
-sudo docker exec ospf_perf3 bash -c 'cat > /etc/frr/frr.conf <<EOF
+sudo docker exec ospf_3 bash -c 'cat > /etc/frr/frr.conf <<EOF
 !
 frr defaults traditional
-hostname ospf_perf3
+hostname ospf_3
 service integrated-vtysh-config
 log file /var/log/frr/frr.log
 !
@@ -163,37 +163,37 @@ EOF'
 
 
 echo "start:"
-sudo docker exec ospf_perf1 /usr/lib/frr/frrinit.sh restart
-sudo docker exec ospf_perf2 /usr/lib/frr/frrinit.sh restart
-sudo docker exec ospf_perf3 /usr/lib/frr/frrinit.sh restart
+sudo docker exec ospf_1 /usr/lib/frr/frrinit.sh restart
+sudo docker exec ospf_2 /usr/lib/frr/frrinit.sh restart
+sudo docker exec ospf_3 /usr/lib/frr/frrinit.sh restart
 
 echo "write:"
-sudo docker exec ospf_perf1 vtysh -c "write"
-sudo docker exec ospf_perf2 vtysh -c "write"
-sudo docker exec ospf_perf3 vtysh -c "write"
+sudo docker exec ospf_1 vtysh -c "write"
+sudo docker exec ospf_2 vtysh -c "write"
+sudo docker exec ospf_3 vtysh -c "write"
 
 
 #zebra和ospf是否运行
 echo "check 进程:"
 echo "container1:"
-sudo docker exec ospf_perf1 ps aux | grep ospfd
+sudo docker exec ospf_1 ps aux | grep ospfd
 echo "container2:"
-sudo docker exec ospf_perf2 ps aux | grep ospfd
+sudo docker exec ospf_2 ps aux | grep ospfd
 
 
 #验证OSPF
 echo "验证OSPF:"
 echo "container1:"
-sudo docker exec ospf_perf1 vtysh -c "show ip ospf neighbor"
-sudo docker exec ospf_perf1 vtysh -c "show ip route"
+sudo docker exec ospf_1 vtysh -c "show ip ospf neighbor"
+sudo docker exec ospf_1 vtysh -c "show ip route"
 
 echo "container2:"
-sudo docker exec ospf_perf2 vtysh -c "show ip ospf neighbor"
-sudo docker exec ospf_perf2 vtysh -c "show ip route"
+sudo docker exec ospf_2 vtysh -c "show ip ospf neighbor"
+sudo docker exec ospf_2 vtysh -c "show ip route"
 
 echo "container3:"
-sudo docker exec ospf_perf3 vtysh -c "show ip ospf neighbor"
-sudo docker exec ospf_perf3 vtysh -c "show ip route"
+sudo docker exec ospf_3 vtysh -c "show ip ospf neighbor"
+sudo docker exec ospf_3 vtysh -c "show ip route"
 
 #test connected
 #echo "test2:"

@@ -1,17 +1,17 @@
 #!/bin/bash
 
 IMAGE="gzy:4"
-
+# -m 30M
 sudo docker run --privileged -itd --name bgp_con1 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
 sudo docker run --privileged -itd --name bgp_con2 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
 
 sudo ip link add veth1 type veth peer name veth2
 # #去掉ARP限制
-# echo 1 > /proc/sys/net/ipv4/conf/veth1/accept_local 
-# echo 1 > /proc/sys/net/ipv4/conf/veth2/accept_local
-# echo 0 > /proc/sys/net/ipv4/conf/all/rp_filter 
-# echo 0 > /proc/sys/net/ipv4/conf/veth2/rp_filter 
-# echo 0 > /proc/sys/net/ipv4/conf/veth1/rp_filter 
+sudo sh -c 'echo 1 > /proc/sys/net/ipv4/conf/veth1/accept_local'
+sudo sh -c 'echo 1 > /proc/sys/net/ipv4/conf/veth2/accept_local'
+sudo sh -c 'echo 0 > /proc/sys/net/ipv4/conf/all/rp_filter'
+sudo sh -c 'echo 0 > /proc/sys/net/ipv4/conf/veth2/rp_filter' 
+sudo sh -c 'echo 0 > /proc/sys/net/ipv4/conf/veth1/rp_filter' 
 
 pid1=$(sudo docker inspect -f '{{.State.Pid}}' bgp_con1)
 pid2=$(sudo docker inspect -f '{{.State.Pid}}' bgp_con2)
@@ -27,6 +27,11 @@ sudo ip netns exec $pid1 ip link set veth1 up
 sudo ip netns exec $pid1 ip addr add 10.10.1.2/24 dev veth1
 sudo ip netns exec $pid2 ip link set veth2 up
 sudo ip netns exec $pid2 ip addr add 10.10.1.4/24 dev veth2
+
+# 在容器内部配置接口并限制带宽
+sudo docker exec -it bgp_con1 /bin/bash -c "
+  tc qdisc add dev veth1 root tbf rate 1mbit burst 32kbit latency 400ms
+"
 
 sudo docker exec -it bgp_con1 bash -c 'cat > /etc/frr/frr.conf <<EOF
 !
