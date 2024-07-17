@@ -42,6 +42,8 @@ router bgp 100
  neighbor 10.10.1.4 ebgp-multihop
  address-family ipv4 unicast
  exit-address-family
+ no bgp network import-check
+ no bgp ebgp-requires-policy
 !
 EOF'
 
@@ -58,6 +60,8 @@ router bgp 200
  neighbor 10.10.1.2 ebgp-multihop
  address-family ipv4 unicast
  exit-address-family
+ no bgp network import-check
+ no bgp ebgp-requires-policy
 !
 EOF'
 

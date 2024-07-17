@@ -28,18 +28,38 @@ sudo ip netns exec $pid1 ip addr add 10.10.1.2/24 dev veth1
 sudo ip netns exec $pid2 ip link set veth2 up
 sudo ip netns exec $pid2 ip addr add 10.10.1.4/24 dev veth2
 
+
+sudo docker exec $pid1 sysctl -w net.ipv4.ip_forward=1
+sudo docker exec $pid1 sysctl -w net.ipv4.ip_forward=1
+
+sudo docker exec $pid1 bash -c "
+
+  # 配置 IPv4 转发
+  echo 'net.ipv4.ip_forward = 1' | tee -a /etc/sysctl.conf
+  sysctl -p /etc/sysctl.conf
+"
+sudo docker exec $pid2 bash -c "
+
+  # 配置 IPv4 转发
+  echo 'net.ipv4.ip_forward = 1' | tee -a /etc/sysctl.conf
+  sysctl -p /etc/sysctl.conf
+"
+
+
 # 在容器内部配置接口并限制带宽
 # 在命名空间 pid1 内限制 veth1 接口的带宽
-sudo ip netns exec $pid1 tc qdisc add dev veth1 root handle 1: htb default 10
-sudo ip netns exec $pid1 tc class add dev veth1 parent 1: classid 1:1 htb rate 60gbit
-sudo ip netns exec $pid1 tc class add dev veth1 parent 1:1 classid 1:10 htb rate 60gbit
-sudo ip netns exec $pid1 tc qdisc add dev veth1 parent 1:10 handle 10: netem delay 0ms
+# sudo ip netns exec $pid1 tc qdisc del root dev veth1
+# sudo ip netns exec $pid1 tc qdisc add root dev veth1 handle 1: htb default 1
+# sudo ip netns exec $pid1 tc class add dev veth1 parent 1: classid 1:1 htb rate 60Mbit ceil 60Mbit prio 0
+# sudo ip netns exec $pid1 tc class add dev veth1 parent 1:1 classid 1:2 htb rate 50Mbit ceil 50Mbit prio 1 burst 96kbit
+# sudo ip netns exec $pid1 tc class add dev veth1 parent 1:1 classid 1:3 htb rate 40Mbit ceil 50Mbit prio 1 burst 96kbit
+# sudo ip netns exec $pid1 tc filter add dev veth1 protocol ip parent 1:0 prio 1 u32 match ip src 10.10.1.2/24 flowid 1:2
 
-# 在命名空间 pid2 内限制 veth2 接口的带宽
-sudo ip netns exec $pid2 tc qdisc add dev veth2 root handle 1: htb default 10
-sudo ip netns exec $pid2 tc class add dev veth2 parent 1: classid 1:1 htb rate 60gbit
-sudo ip netns exec $pid2 tc class add dev veth2 parent 1:1 classid 1:10 htb rate 60gbit
-sudo ip netns exec $pid2 tc qdisc add dev veth2 parent 1:10 handle 10: netem delay 0ms
+# # 在命名空间 pid2 内限制 veth2 接口的带宽
+# sudo ip netns exec $pid2 tc qdisc add dev veth2 root handle 1: htb default 10
+# sudo ip netns exec $pid2 tc class add dev veth2 parent 1: classid 1:1 htb rate 10gbit
+# sudo ip netns exec $pid2 tc class add dev veth2 parent 1:1 classid 1:10 htb rate 10gbit
+# sudo ip netns exec $pid2 tc qdisc add dev veth2 parent 1:10 handle 10: netem delay 0ms
 
 
 
@@ -56,6 +76,8 @@ router bgp 100
  neighbor 10.10.1.4 ebgp-multihop
  address-family ipv4 unicast
  exit-address-family
+ no bgp network import-check
+ no bgp ebgp-requires-policy
 !
 EOF'
 
@@ -72,6 +94,8 @@ router bgp 200
  neighbor 10.10.1.2 ebgp-multihop
  address-family ipv4 unicast
  exit-address-family
+ no bgp network import-check
+ no bgp ebgp-requires-policy
 !
 EOF'
 
@@ -80,8 +104,3 @@ sudo docker exec bgp_con2 /usr/lib/frr/frrinit.sh restart
 
 sudo docker exec bgp_con1 vtysh -c "write"
 sudo docker exec bgp_con2 vtysh -c "write"
-
-
-
-
-
