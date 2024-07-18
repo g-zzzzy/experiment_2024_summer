@@ -2,7 +2,7 @@
 
 LOGFILE="bgp/throughput/1throughput.txt"
 
-DOCKER_STATS_LOGFILE="bgp/resource/1resource_mem20.csv"
+DOCKER_STATS_LOGFILE="bgp/resource/1resource.csv"
 echo "Source, Destination, Test Time(seconds), Parallel Streams, Bandwidth(Gbps), Restransmissions" > $LOGFILE
 
 # sudo docker exec -d bgp_con1 bash -c "> /src/bgp/resource/1resource_1.csv.csv"
