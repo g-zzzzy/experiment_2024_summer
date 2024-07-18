@@ -2,8 +2,24 @@
 
 IMAGE="gzy:4"
 # -m 30M
-sudo docker run --privileged -itd --name bgp_con1 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
-sudo docker run --privileged -itd --name bgp_con2 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
+sudo docker run --privileged -itd \
+  --name bgp_con1 \
+  --label "org.label-schema.tc.enabled=1" \
+  --label "org.label-schema.tc.rate=30gbps" \
+  --label "org.label-schema.tc.ceil=30gbps" \
+  --mount type=bind,source="$(pwd)",target=/src \
+  --network none \
+  $IMAGE
+
+sudo docker run --privileged -itd \
+  --name bgp_con2 \
+  --label "org.label-schema.tc.enabled=1" \
+  --label "org.label-schema.tc.rate=30gbps" \
+  --label "org.label-schema.tc.ceil=30gbps" \
+  --mount type=bind,source="$(pwd)",target=/src \
+  --network none \
+  $IMAGE
+# sudo docker run --privileged -itd --name bgp_con2 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
 
 sudo ip link add veth1 type veth peer name veth2
 # #去掉ARP限制
