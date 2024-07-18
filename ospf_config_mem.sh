@@ -9,9 +9,9 @@ IMAGE="gzy:4"
 # sudo docker rm ospf_perf2
 # sudo docker rm ospf_perf3
 
-sudo docker run --privileged -itd -m 35M --name ospf_1 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
-sudo docker run --privileged -itd -m 35M --name ospf_2 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
-sudo docker run --privileged -itd -m 35M --name ospf_3 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
+sudo docker run --privileged -itd --name ospf_1 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
+sudo docker run --privileged -itd --name ospf_2 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
+sudo docker run --privileged -itd --name ospf_3 --mount type=bind,source="$(pwd)",target=/src --network none $IMAGE
 sudo docker exec -it ospf_1 /bin/bash -c "sysctl -w net.ipv4.ip_forward=1"
 sudo docker exec -it ospf_2 /bin/bash -c "sysctl -w net.ipv4.ip_forward=1"
 sudo docker exec -it ospf_3 /bin/bash -c "sysctl -w net.ipv4.ip_forward=1"
